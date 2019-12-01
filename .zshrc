@@ -27,6 +27,12 @@ unset zshrc_local
 #ls color settings
 isdarwin && export CLICOLOR=1
 isdarwin && export LSCOLORS=GxhFCxdxHbegedabagacad
+if ! isdarwin ;then
+  if [ -z "$LS_COLORS" ];then
+    eval $(dircolors)
+  fi
+fi
+#
 #
 autoload -Uz zmv
 
