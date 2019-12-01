@@ -1,0 +1,79 @@
+#-----------------------------------------------------------------
+# alias v0.0.1 2019/12/1
+#-----------------------------------------------------------------
+alias condaupdate='conda update --all -y'
+#conda update -n base -c defaults conda
+alias texupdate="sudo tlmgr update --self --all"
+if isdarwin; then
+  alias ls='ls -vFG'
+  alias ll='ls -ltrh'
+  alias la='ls -a'
+  alias pwdcp="pwd | tr -d '\n' | pbcopy; pwd"
+  alias -s pdf=open
+  alias -s eps=open
+  alias -s ps=open
+  alias -s png=open
+  alias -s jpg=open
+  alias -s tex=open
+  alias .='open .'
+#isdarwin && alias java='/usr/bin/java -Dapple.awt.UIElement=true'
+ # alias macupdate='softwareupdate --install --all'
+  alias macupdate='sudo -H softwareupdate --install --all'
+  alias brewupdate='brew update && brew upgrade'
+  alias update='texupdate; macupdate; brewupdate; condaupdate'
+else
+  alias ls='ls -vFG --color=auto'
+  alias ll='ls -ltrh --color=auto'
+  alias la='ls -a --color=auto'
+  alias pwdcp="pwd | tr -d '\n' | xclip -sel clip; pwd"
+  alias .='(nautilus . &>/dev/null &)'
+  alias yumupdate='sudo -H yum -y update'
+  alias update='yumupdate; texupdate; condaupdate'
+fi
+
+alias h='history 20'
+alias more='less'
+# inform
+alias rm='rm -i'
+alias mv='mv -i'
+alias cp='cp -i -r'
+#alias which='type -path'
+alias rehash='hash -r'
+#alias rmdir='rm -rf'
+alias s=source
+alias x=start
+alias j=jobs
+alias emacs='emacs -nw'
+alias screen='screen -U'
+#alias ccl=ccl64
+#alias deletelocalsnapshot='sudo tmutil disablelocal && sudo tmutil enablelocal'
+
+alias mkdir='mkdir -p'
+alias -- +x="chmod +x"
+
+#alias kisti="ssh kensuke1@tachyon2.ksc.re.kr"
+
+#######
+alias reload="source ~/.zshrc"
+alias launchServicesDatabaseRebuild="/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister -kill -r -f -all local,system,user"
+
+alias tw="open -a /Applications/TextWrangler.App"
+alias iesc2="ssh 140.109.81.141"
+alias oldies="ssh 140.109.81.186"
+alias killCaps="setxkbmap -option ctrl:nocaps"
+alias momoxo="ssh momoxo.eps.s.u-tokyo.ac.jp"
+alias wave="ssh wave.eps.s.u-tokyo.ac.jp"
+alias impeldown="ssh impeldown.64-b.it"
+alias merveille="ssh merveille.64-b.it"
+#alias okumano="ssh 61.206.204.164"
+alias scp="scp -r"
+#alias pipupdate="sudo -H pip install -U pip && pip freeze --local | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 sudo -H pip3 install -U"
+alias df="df -h"
+
+if which colordiff >&/dev/null; then
+  alias diff='colordiff'
+fi
+
+alias -s properties='java io.github.kensuke1984.kibrary.Operation'
+alias cleanbrew='brew cleanup -s'
+alias cleanconda='conda clean --all'
