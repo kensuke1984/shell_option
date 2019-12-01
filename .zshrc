@@ -1,3 +1,4 @@
+# .zshrc v0.0.1 2019/12/1
 #detection of the OS
 isdarwin(){
   [[ $OSTYPE == darwin* ]] && return 0
@@ -19,6 +20,10 @@ kibrary_install(){
   fi
 }
 
+zshrc_local="$HOME/.zshrc_$(hostname)"
+test -r "$zshrc_local" && source "$zshrc_local"
+unset zshrc_local
+
 #ls color settings
 isdarwin && export CLICOLOR=1
 isdarwin && export LSCOLORS=GxhFCxdxHbegedabagacad
@@ -38,7 +43,7 @@ test -r /opt/intel/bin/compilervars.sh && source /opt/intel/bin/compilervars.sh 
 #
 # End of lines configured by zsh-newuser-install
 # The following lines were added by compinstall
-zstyle :compinstall filename '/Users/kensuke/.zshrc'
+zstyle :compinstall filename "$HOME/.zshrc"
 
 autoload -Uz compinit
 compinit
@@ -152,16 +157,16 @@ isdarwin || alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=extract
 # 5:magenta
 # 6:cyan
 # 7:white
-# それ以外：black
+# others:black
 # %f:reset_color
 autoload -Uz colors; colors
 
-#左プロンプト
+# left prompt
 #PROMPT="%F{green}%n@%m%F{magenta}${WINDOW:+[$WINDOW]}%F{white}[%T]%#%f "
 PROMPT="%F{green}%n@%m %F{white}[%T]%#%f "
 
 
-# 右プロンプト
+# right prompt
 # バージョン管理システム関連の情報を表示(zsh >=4.3.6)
 autoload -Uz is-at-least
 if is-at-least 4.3.6; then
@@ -232,7 +237,7 @@ platex_dvipdfmx(){
 }
 
 pdf_merge(){
-test -e output.pdf && echo 'output.pdf exists.' || gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=output.pdf $@
+  test -e output.pdf && echo 'output.pdf exists.' || gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=output.pdf $@
 }
 
 
@@ -305,7 +310,8 @@ abbreviations=(
   "Ki"    "https://kensuke1984.github.io/bin/install.sh"
   "Prop"  "properties"
   "Iris"  "ftp.iris.washington.edu"
-  "Imp"   "impeldown.001www.com"
+  "Imp"   "impeldown.64-b.it"
+  "Mer"   "merveille.64-b.it"
 )
 
 magic-abbrev-expand() {
@@ -447,7 +453,7 @@ test -e $SACHOME && source ${SACHOME}/bin/sacinit.sh || unset SACHOME
 #
 #sgftops
 function sgftops(){
-  if [[ -e "${1%sgf}ps" ]]; then
+  if [ -e "${1%sgf}ps" ]; then
     printf "%s already exists.\n" "${1%sgf}.ps"
     return 9
   fi
@@ -456,22 +462,29 @@ function sgftops(){
 
 #for hdf5
 hdfPATH=/usr/local/hdf5
-test -r $hdfPATH && export CPPFLAGS=-I$hdfPATH/include
-test -r $hdfPATH && export LDFLAGS=-L$hdfPATH/lib
-test -r $hdfPATH && export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$hdfPATH/lib
+if [ -e "$hdfPATH" ];then
+  export CPPFLAGS=-I"$hdfPATH/include"
+  export LDFLAGS=-L"$hdfPATH/lib"
+  export LD_LIBRARY_PATH="$LD_LIBRARY_PATH":"$hdfPATH"/lib
+fi
 unset hdfPATH
 #
 
 #for MPI
-test -r /usr/local/openmpi && export PATH=/usr/local/openmpi/bin:$PATH
+test -r /usr/local/openmpi && export PATH=/usr/local/openmpi/bin:"$PATH"
 #
+
+#OPT BIN
+test -r /opt/bin && export PATH=/opt/bin:"$PATH"
 
 
 #PGI
-export PGI=/opt/pgi
-export PATH=/opt/pgi/linux86-64/19.10/bin:$PATH
-export MANPATH=$MANPATH:/opt/pgi/linux86-64/19.10/man
-export LM_LICENSE_FILE=$LM_LICENSE_FILE:/opt/pgi/license.dat
+if [ -e "/opt/pgi/linux86-64/19.10" ];then
+  export PGI=/opt/pgi
+#  export PATH=/opt/pgi/linux86-64/19.10/bin:$PATH
+  export MANPATH="$MANPATH":/opt/pgi/linux86-64/19.10/man
+  export LM_LICENSE_FILE="$LM_LICENSE_FILE":/opt/pgi/license.dat
+fi
 
 #Python
 #conpath="$HOME/.pyenv/versions/anaconda3-4.4.0"
