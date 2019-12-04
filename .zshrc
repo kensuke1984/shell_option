@@ -1,15 +1,15 @@
-#### .zshrc v0.0.2 2019/12/4
+#### .zshrc v0.0.2.1 2019/12/4
 # detection of the OS
 isdarwin(){
-  [[ $OSTYPE == darwin* ]] && return 0
+  [[ "$OSTYPE" == darwin* ]] && return 0
   return 1
 }
 islinux(){
-  [[ $OSTYPE == linux-gnu ]] && return 0
+  [[ "$OSTYPE" == linux-gnu ]] && return 0
   return 1
 }
 isemacs(){
-  [[ "$EMACS" != "" ]] && return 0
+  [ ! -z "$EMACS" ] && return 0
   return 1
 }
 kibrary_install(){
@@ -21,8 +21,7 @@ kibrary_install(){
 }
 
 #ls color settings
-isdarwin && export CLICOLOR=1
-isdarwin && export LSCOLORS=GxhFCxdxHbegedabagacad
+isdarwin && (export LSCOLORS=GxhFCxdxHbegedabagacad; export CLICOLOR=1)
 if ! isdarwin ;then
   if [ -z "$LS_COLORS" ];then
     eval $(dircolors)
@@ -160,7 +159,6 @@ autoload -Uz colors; colors
 #PROMPT="%F{green}%n@%m%F{magenta}${WINDOW:+[$WINDOW]}%F{white}[%T]%#%f "
 PROMPT="%F{green}%n@%m %F{white}[%T]%#%f "
 
-
 # right prompt
 # バージョン管理システム関連の情報を表示(zsh >=4.3.6)
 autoload -Uz is-at-least
@@ -237,31 +235,30 @@ pdf_merge(){
 
 
 
-# coreutils ls および Zsh 補完色用の設定
-isdarwin && export LS_COLORS='di=36:ln=37；45:so=32:pi=33:ex=37;41:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43'
+# colors used in coreutils ls and Zsh completion
+isdarwin && export LS_COLORS='di=36:ln=37;45:so=32:pi=33:ex=37;41:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43'
 
 #-----------------------------------------------------------------
-# 補完設定
+# settings for completion
 #-----------------------------------------------------------------
-# 補完無視ファイル設定
+# ignored suffix for completion
 fignore=(.o .dvi .aux .toc - \~)
 # 補完の利用設定
 autoload -Uz compinit; compinit
 
-## 補完設定
-# 補完表示を全てする
+# show all candidates
 zstyle ':completion:*' verbose 'yes'
 # 補完の機能を拡張
 zstyle ':completion:*' completer _expand _complete _match _prefix _approximate _list _history
 # 補完候補で入力された文字でまず補完してみて、補完不可なら大文字小文字を変換して補完する
 zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z} r:|[-_.]=**' '+m:{A-Z}={a-z} r:|[-_.]=**'
 
-## 色設定
+## color settings
 # 補完候補に LSCOLORS 同様色を付与
 #zstyle ':completion:*:default' list-colors ${(s.:.)LSCOLORS}
 # ファイルリスト補完でも coreutils ls と同様に色をつける
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
-# 補完メッセージの色
+# colors for messages
 zstyle ':completion:*:messages' format "%{$fg[yellow]%}'%d'%f"
 zstyle ':completion:*:warnings' format "%{$fg[red]%}'No matches for:'%{$fg[yellow]%}' %d'%f"
 zstyle ':completion:*:descriptions' format "%{$fg[yellow]%}'completing %B%d%b'%f"
@@ -278,7 +275,6 @@ zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
 autoload -Uz url-quote-magic
 zstyle ':url-quote-magic:*' url-metas '?'
 zle -N self-insert url-quote-magic
-
 
 #autoload predict-on
 #predict-on
@@ -393,26 +389,6 @@ epspng(){
   convert "$1" "${1%eps}png"
 }
 
-# Attempt to set JAVA_HOME if it's not already set.
-if [ -z "$JAVA_HOME" ]; then
-  if isdarwin; then
-    [ -z "$JAVA_HOME" -a -f "/usr/libexec/java_home" ] && export JAVA_HOME=$(/usr/libexec/java_home)
-    [ -z "$JAVA_HOME" -a -d "/Library/Java/Home" ] && export JAVA_HOME="/Library/Java/Home"
-    [ -z "$JAVA_HOME" -a -d "/System/Library/Frameworks/JavaVM.framework/Home" ] && export JAVA_HOME="/System/Library/Frameworks/JavaVM.framework/Home"
-  else
-    javaExecutable="$(command -v javac 2>/dev/null)"
-    [[ -z "$javaExecutable" ]] && echo "JAVA_HOME not set and cannot find javac to deduce location, please set JAVA_HOME." 
-    readLink="$(command -v readlink 2>/dev/null)"
-    [[ -z "$readLink" ]] && echo "JAVA_HOME not set and readlink not available, please set JAVA_HOME."
-    javaExecutable="$(readlink -f "$javaExecutable")"
-    javaHome="$(dirname "$javaExecutable")"
-    javaHome=$(expr "$javaHome" : '\(.*\)/bin')
-    JAVA_HOME="$javaHome"
-    [[ -z "$JAVA_HOME" ]] && echo "could not find java, please set JAVA_HOME"
-    export JAVA_HOME
-  fi
-fi
-
 isdarwin || setxkbmap -option ctrl:nocaps
 
 pyenv="$HOME/.pyenv"
@@ -425,7 +401,7 @@ test -e $SACHOME && source ${SACHOME}/bin/sacinit.sh || (unset SACHOME; printf "
 
 #for TauP
 TAUPHOME=/usr/local/taup
-test -e ${TAUPHOME} && export PATH=$PATH:${TAUPHOME}/bin
+test -e ${TAUPHOME} && export PATH=$PATH:${TAUPHOME}/bin || printf "TauP should be installed\n" 1>&2
 unset TAUPHOME
 #
 
@@ -442,16 +418,6 @@ function sgftops(){
   ${SACHOME}/bin/sgftops "$1" "${1%sgf}ps"
 }
 
-#OPT BIN
-test -r /opt/bin && export PATH=/opt/bin:"$PATH"
-
-#PGI
-if [ -e "/opt/pgi/linux86-64/19.10" ];then
-  export PGI=/opt/pgi
-  export MANPATH="$MANPATH":/opt/pgi/linux86-64/19.10/man
-  export LM_LICENSE_FILE="$LM_LICENSE_FILE":/opt/pgi/license.dat
-fi
-
 # local settings
 zshrc_local="$HOME/.zshrc_$(hostname)"
 test -r "$zshrc_local" && source "$zshrc_local"
@@ -463,4 +429,25 @@ typeset -U path cdpath fpath manpath
 typeset -T LD_LIBRARY_PATH ld_library_path
 typeset -U ld_library_path
 #
+
+# Attempt to set JAVA_HOME if it's not already set.
+if [ -z "$JAVA_HOME" ]; then
+  if isdarwin; then
+    [ -z "$JAVA_HOME" -a -f "/usr/libexec/java_home" ] && export JAVA_HOME=$(/usr/libexec/java_home)
+    [ -z "$JAVA_HOME" -a -d "/Library/Java/Home" ] && export JAVA_HOME="/Library/Java/Home"
+    [ -z "$JAVA_HOME" -a -d "/System/Library/Frameworks/JavaVM.framework/Home" ] && export JAVA_HOME="/System/Library/Frameworks/JavaVM.framework/Home"
+  else
+    javaExecutable="$(command -v javac 2>/dev/null)"
+    [ -z "$javaExecutable" ] && echo "JAVA_HOME not set and cannot find javac to deduce location, please set JAVA_HOME." 
+    readLink="$(command -v readlink 2>/dev/null)"
+    [ -z "$readLink" ] && echo "JAVA_HOME not set and readlink not available, please set JAVA_HOME."
+    javaExecutable="$(readlink -f "$javaExecutable")"
+    javaHome="$(dirname "$javaExecutable")"
+    javaHome=$(expr "$javaHome" : '\(.*\)/bin')
+    JAVA_HOME="$javaHome"
+    [ -z "$JAVA_HOME" ] && echo "could not find java, please set JAVA_HOME"
+    export JAVA_HOME
+  fi
+fi
+
 
