@@ -1,0 +1,34 @@
+#Intel compiler
+#test -r /opt/intel/bin/compilervars.sh && source /opt/intel/bin/compilervars.sh intel64
+
+#for MPI
+test -r /usr/local/openmpi && export PATH=/usr/local/openmpi/bin:$PATH
+#
+
+#for hdf5
+hdfPATH=/usr/local/hdf5
+if [ -e "$hdfPATH" ];then
+  export CPPFLAGS=-I"$hdfPATH/include"
+  export LDFLAGS=-L"$hdfPATH/lib"
+  export LD_LIBRARY_PATH="$LD_LIBRARY_PATH":"$hdfPATH"/lib
+fi
+unset hdfPATH
+#
+
+#for Tex
+TEXLIVE=/usr/local/texlive/2016
+test -e $TEXLIVE/bin/x86_64-linux && export PATH=$PATH:$TEXLIVE/bin/x86_64-linux
+test -e $TEXLIVE/texmf-dist/doc/info && export INFOPATH=$INFOPATH:$TEXLIVE/texmf-dist/doc/info
+test -e $TEXLIVE/texmf-dist/doc/man && export MANPATH=$MANPATH:$TEXLIVE/texmf-dist/doc/man
+unset TEXLIVE
+#
+
+#for evalresp
+test -r /usr/local/evalresp && export PATH=$PATH:/usr/local/evalresp/bin
+#
+
+#for netcdf
+test -r /usr/local/netcdf && export PATH=$PATH:/usr/local/netcdf/bin
+#
+
+

@@ -1,5 +1,5 @@
-# .zshrc v0.0.1 2019/12/1
-#detection of the OS
+#### .zshrc v0.0.2 2019/12/4
+# detection of the OS
 isdarwin(){
   [[ $OSTYPE == darwin* ]] && return 0
   return 1
@@ -20,10 +20,6 @@ kibrary_install(){
   fi
 }
 
-zshrc_local="$HOME/.zshrc_$(hostname)"
-test -r "$zshrc_local" && source "$zshrc_local"
-unset zshrc_local
-
 #ls color settings
 isdarwin && export CLICOLOR=1
 isdarwin && export LSCOLORS=GxhFCxdxHbegedabagacad
@@ -33,8 +29,6 @@ if ! isdarwin ;then
   fi
 fi
 #
-#
-autoload -Uz zmv
 
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.zsh_history_linux
@@ -43,14 +37,12 @@ SAVEHIST=20000
 bindkey -e
 umask 022
 
-#Intel compiler
-test -r /opt/intel/bin/compilervars.sh && source /opt/intel/bin/compilervars.sh intel64
-#
 #
 # End of lines configured by zsh-newuser-install
 # The following lines were added by compinstall
 zstyle :compinstall filename "$HOME/.zshrc"
 
+autoload -Uz zmv
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall
@@ -70,7 +62,6 @@ export LC_ALL="ja_JP.UTF-8"
 # tmp
 #export TMP="${HOME}/tmp"
 
-
 # less
 #export LESSCHARDEF=8bcccbcc18b95.33b33b.
 export LESSCHARSET="UTF-8"
@@ -79,7 +70,6 @@ export LESS="-isnMCd -c -m -x4 -R"
 export LESSBINFMT='*n-'
 export PAGER=less
 export CLICOLOR_FORCE=1
-
 
 #---------
 #Zsh option
@@ -133,7 +123,7 @@ setopt nohup
 setopt noclobber
 
 # operate ls_abbrev when 'cd'
-function chpwd(){ls_abbrev}
+function chpwd() {ls_abbrev}
 
 function extract() {
   case "$1" in
@@ -151,7 +141,6 @@ function extract() {
   esac
 }
 isdarwin || alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=extract
-
 
 # カラー記述を簡略化
 # 数字や文字で色を指定できるようにする
@@ -404,7 +393,6 @@ epspng(){
   convert "$1" "${1%eps}png"
 }
 
-#
 # Attempt to set JAVA_HOME if it's not already set.
 if [ -z "$JAVA_HOME" ]; then
   if isdarwin; then
@@ -431,79 +419,43 @@ pyenv="$HOME/.pyenv"
 test -e "$pyenv" && export PATH="$pyenv/bin:$PATH" && eval "$(pyenv init -)"
 isdarwin && eval "$(/usr/local/bin/pyenv init -)"
 
+# for SAC
+SACHOME=/usr/local/sac
+test -e $SACHOME && source ${SACHOME}/bin/sacinit.sh || (unset SACHOME; printf "SAC should be installed\n" 1>&2)
+
 #for TauP
 TAUPHOME=/usr/local/taup
 test -e ${TAUPHOME} && export PATH=$PATH:${TAUPHOME}/bin
 unset TAUPHOME
 #
 
-#for evalresp
-test -r /usr/local/evalresp && export PATH=$PATH:/usr/local/evalresp/bin
-#
-
-#for netcdf
-test -r /usr/local/netcdf && export PATH=$PATH:/usr/local/netcdf/bin
-#
-
-#for Tex
-TEXLIVE=/usr/local/texlive/2016
-test -e $TEXLIVE/bin/x86_64-linux && export PATH=$PATH:$TEXLIVE/bin/x86_64-linux
-test -e $TEXLIVE/texmf-dist/doc/info && export INFOPATH=$INFOPATH:$TEXLIVE/texmf-dist/doc/info
-test -e $TEXLIVE/texmf-dist/doc/man && export MANPATH=$MANPATH:$TEXLIVE/texmf-dist/doc/man
-unset TEXLIVE
-#
-
-# for SAC
-SACHOME=/usr/local/sac
-test -e $SACHOME && source ${SACHOME}/bin/sacinit.sh || unset SACHOME
-#
 #sgftops
 function sgftops(){
+  if [ ! -e "${SACHOME}"/bin/sgftops ];then
+    printf "SACHOME is not set. (71)\n" 1>&2
+    exit 71
+  fi
   if [ -e "${1%sgf}ps" ]; then
-    printf "%s already exists.\n" "${1%sgf}.ps"
+    printf "%s already exists.\n" "${1%sgf}.ps" 1>&2
     return 9
   fi
   ${SACHOME}/bin/sgftops "$1" "${1%sgf}ps"
 }
 
-#for hdf5
-hdfPATH=/usr/local/hdf5
-if [ -e "$hdfPATH" ];then
-  export CPPFLAGS=-I"$hdfPATH/include"
-  export LDFLAGS=-L"$hdfPATH/lib"
-  export LD_LIBRARY_PATH="$LD_LIBRARY_PATH":"$hdfPATH"/lib
-fi
-unset hdfPATH
-#
-
-#for MPI
-test -r /usr/local/openmpi && export PATH=/usr/local/openmpi/bin:"$PATH"
-#
-
 #OPT BIN
 test -r /opt/bin && export PATH=/opt/bin:"$PATH"
-
 
 #PGI
 if [ -e "/opt/pgi/linux86-64/19.10" ];then
   export PGI=/opt/pgi
-#  export PATH=/opt/pgi/linux86-64/19.10/bin:$PATH
   export MANPATH="$MANPATH":/opt/pgi/linux86-64/19.10/man
   export LM_LICENSE_FILE="$LM_LICENSE_FILE":/opt/pgi/license.dat
 fi
 
-#Python
-#conpath="$HOME/.pyenv/versions/anaconda3-4.4.0"
-#sitepath="$conpath/lib/python3.6/site-packages"
-#test -e "$conpath" && export PATH="$conpath/bin:$PATH"
-#test -e "$sitepath" && export PYTHONPATH="$sitepath":$PYTHONPATH
-#unset sitepath conpath
-#
-
-#Kibrary
-#kibraryrc="$HOME/.Kibrary/bin/init_bash.sh"
-#test -e "$kibraryrc" && source $kibraryrc
-#unset kibraryrc
+# local settings
+zshrc_local="$HOME/.zshrc_$(hostname)"
+test -r "$zshrc_local" && source "$zshrc_local"
+unset zshrc_local
 #
 
 # Delete duplicates
@@ -511,3 +463,4 @@ typeset -U path cdpath fpath manpath
 typeset -T LD_LIBRARY_PATH ld_library_path
 typeset -U ld_library_path
 #
+
