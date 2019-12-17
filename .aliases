@@ -77,3 +77,5 @@ fi
 alias -s properties='java io.github.kensuke1984.kibrary.Operation'
 alias cleanbrew='brew cleanup -s'
 alias cleanconda='conda clean --all'
+
+alias sed_rmblanklines="sed '/^$/d'"
