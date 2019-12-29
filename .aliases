@@ -1,5 +1,5 @@
 #-----------------------------------------------------------------
-# alias v0.0.1 2019/12/1
+# alias v0.0.2 2019/12/29
 #-----------------------------------------------------------------
 alias condaupdate='conda update --all -y'
 #conda update -n base -c defaults conda
@@ -77,5 +77,5 @@ fi
 alias -s properties='java io.github.kensuke1984.kibrary.Operation'
 alias cleanbrew='brew cleanup -s'
 alias cleanconda='conda clean --all'
-
+alias create_piac='zip -r piac.zip ak135.cat iprem.cat prem.cat'
 alias sed_rmblanklines="sed '/^$/d'"
