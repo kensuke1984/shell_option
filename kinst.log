@@ -1,0 +1,2 @@
+###install.sh stdout 0.2.1
+PATH=/opt/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/local/sac/bin:/usr/local/taup/bin
