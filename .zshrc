@@ -14,7 +14,7 @@ isemacs(){
 }
 kibrary_install(){
   if command -v curl >/dev/null 2>&1;then
-     kins=$(mktemp) && curl -sL -o $kins https://kensuke1984.github.io/bin/install.sh && /bin/sh $kins && rm -f $kins
+     kins=$(mktemp) && curl -s -o $kins https://kensuke1984.github.io/bin/install.sh && /bin/sh $kins && rm -f $kins
   elif command -v wget >/dev/null 2>&1;then
     kins=$(mktemp) && wget -q -O $kins https://kensuke1984.github.io/bin/install.sh && /bin/sh $kins && rm -f $kins
   fi
