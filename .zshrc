@@ -1,4 +1,4 @@
-#### .zshrc v0.0.2.1 2019/12/4
+#### .zshrc v0.0.2.2 2020/1/30
 # detection of the OS
 isdarwin(){
   [[ "$OSTYPE" == darwin* ]] && return 0
@@ -21,8 +21,10 @@ kibrary_install(){
 }
 
 #ls color settings
-isdarwin && (export LSCOLORS=GxhFCxdxHbegedabagacad; export CLICOLOR=1)
-if ! isdarwin ;then
+if isdarwin ;then
+  export LSCOLORS=GxhFCxdxHbegedabagacad
+  export CLICOLOR=1
+else 
   if [ -z "$LS_COLORS" ];then
     eval $(dircolors)
   fi
