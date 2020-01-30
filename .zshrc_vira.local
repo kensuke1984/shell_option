@@ -1,0 +1,2 @@
+# 2020/1/30
+HISTFILE="$HOME/Dropbox/settings/.zsh_history_$(hostname)"
