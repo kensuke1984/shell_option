@@ -32,7 +32,7 @@ fi
 #
 
 # Lines configured by zsh-newuser-install
-HISTFILE=~/.zsh_history_linux
+HISTFILE="$HOME/.zsh_history_$(hostname)"
 HISTSIZE=20000
 SAVEHIST=20000
 bindkey -e
