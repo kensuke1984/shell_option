@@ -1,4 +1,4 @@
-export PATH=/opt/bin:$PATH
+export PATH="/opt/bin:$PATH"
 
 #PGI
 if [ -e "/opt/pgi/linux86-64/19.10" ];then

@@ -1,4 +1,4 @@
-#### .zshrc v0.0.2.2 2020/1/30
+#### .zshrc v0.0.2.3 2020/2/19
 # detection of the OS
 isdarwin(){
   [[ "$OSTYPE" == darwin* ]] && return 0
@@ -19,6 +19,11 @@ kibrary_install(){
     kins=$(mktemp) && wget -q -O $kins https://kensuke1984.github.io/bin/install.sh && /bin/sh $kins && rm -f $kins
   fi
 }
+
+#Kibrary
+if [ -e "$HOME/Kibrary" ];then
+  export PATH="$HOME/Kibrary/bin:$PATH"
+fi
 
 #ls color settings
 if isdarwin ;then
