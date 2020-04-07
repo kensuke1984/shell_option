@@ -6,3 +6,6 @@ if [ -e "/opt/pgi/linux86-64/19.10" ];then
   export MANPATH="$MANPATH":/opt/pgi/linux86-64/19.10/man
   export LM_LICENSE_FILE="$LM_LICENSE_FILE":/opt/pgi/license.dat
 fi
+
+#Anaconda
+export PATH=$HOME/anaconda3/bin:$PATH
