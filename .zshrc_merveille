@@ -9,3 +9,5 @@ fi
 
 #Anaconda
 export PATH=$HOME/anaconda3/bin:$PATH
+#openmpi
+export PATH=/opt/openmpi/bin:$PATH
