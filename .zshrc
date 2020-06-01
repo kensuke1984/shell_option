@@ -310,6 +310,7 @@ abbreviations=(
   "Iris"  "ftp.iris.washington.edu"
   "Imp"   "impeldown.64-b.it"
   "Mer"   "merveille.64-b.it"
+  "GIT"   "io.github.kensuke1984."
 )
 
 magic-abbrev-expand() {
