@@ -1,4 +1,4 @@
-#### .zshrc v0.0.3 2020/8/3
+#### .zshrc v0.0.3.1 2020/8/3
 
 # detection of the OS
 isdarwin(){
@@ -370,7 +370,7 @@ iris(){
 }
 
 ls_abbrev() {
-  [ -r "$(PWD)" ] || return
+  [ -r "${PWD}" ] || return
   # -a : Do not ignore entries starting with ..
   # -C : Force multi-column output.
   # -F : Append indicator (one of */=>@|) to entries.
