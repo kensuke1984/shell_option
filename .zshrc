@@ -1,42 +1,53 @@
-#### .zshrc v0.0.2.3 2020/2/19
+#### .zshrc v0.0.3 2020/8/3
+
 # detection of the OS
 isdarwin(){
-  [[ "$OSTYPE" == darwin* ]] && return 0
-  return 1
+  [[ "$OSTYPE" == darwin* ]] && return 0 || return 1
 }
+
 islinux(){
-  [[ "$OSTYPE" == linux-gnu ]] && return 0
-  return 1
+  [[ "$OSTYPE" == linux-gnu ]] && return 0 || return 1
 }
+
 isemacs(){
-  [ ! -z "$EMACS" ] && return 0
-  return 1
+  [ -n "$EMACS" ] && return 0 || return 1
 }
+
+# Kibrary
+[ -e "$HOME/Kibrary" ] && export PATH="$HOME/Kibrary/bin:$PATH"
+
 kibrary_install(){
   kins=$(mktemp)
-  if command -v curl >/dev/null 2>&1;then
-    curl -sL -o $kins https://bit.ly/2YUfEB6
-  elif command -v wget >/dev/null 2>&1;then
-    wget -q -O $kins https://bit.ly/2YUfEB6
+  if command -v curl >/dev/null 2>&1; then
+    curl -sL -o "$kins" https://bit.ly/2YUfEB6
+  elif command -v wget >/dev/null 2>&1; then
+    wget -q -O "$kins" https://bit.ly/2YUfEB6
   fi
-  /bin/sh $kins && rm -f $kins
+  /bin/sh "$kins"
+  rm -f "$kins"
 }
 
-#Kibrary
-if [ -e "$HOME/Kibrary" ];then
-  export PATH="$HOME/Kibrary/bin:$PATH"
-fi
+anisotime_install(){
+  if [ -f 'anisotime' ]; then
+    printf 'anisotime already exists.\n'
+    return 1
+  fi
+  if command -v curl >/dev/null 2>&1; then
+    curl -sL -o anisotime https://bit.ly/2Xdq5QI
+  elif command -v wget >/dev/null 2>&1; then
+    wget -q -O anisotime https://bit.ly/2Xdq5QI
+  fi
+  chmod +x anisotime
+}
 
-#ls color settings
-if isdarwin ;then
+
+# ls color settings
+if isdarwin; then
   export LSCOLORS=GxhFCxdxHbegedabagacad
   export CLICOLOR=1
 else 
-  if [ -z "$LS_COLORS" ];then
-    eval $(dircolors)
-  fi
+  [ -z "$LS_COLORS" ] && eval "$(dircolors)"
 fi
-#
 
 # Lines configured by zsh-newuser-install
 HISTFILE="$HOME/.zsh_history_$(hostname)"
@@ -45,7 +56,6 @@ SAVEHIST=20000
 bindkey -e
 umask 022
 
-#
 # End of lines configured by zsh-newuser-install
 # The following lines were added by compinstall
 zstyle :compinstall filename "$HOME/.zshrc"
@@ -64,35 +74,35 @@ export TZ='Asia/Taipei'
 #export TZ='Europe/Paris'
 
 #character code
-export LC_ALL="ja_JP.UTF-8"
+export LC_ALL='ja_JP.UTF-8'
 # DISPLAY
-#export DISPLAY="localhost"
+#export DISPLAY='localhost'
 # tmp
 #export TMP="${HOME}/tmp"
 
 # less
 #export LESSCHARDEF=8bcccbcc18b95.33b33b.
-export LESSCHARSET="UTF-8"
+export LESSCHARSET='UTF-8'
 #export LESS='-c -m -x4 -R'
-export LESS="-isnMCd -c -m -x4 -R"
+export LESS='-isnMCd -c -m -x4 -R'
 export LESSBINFMT='*n-'
 export PAGER=less
 export CLICOLOR_FORCE=1
 
 #---------
-#Zsh option
+# Zsh option
 #
 # add command history to a file
 setopt appendhistory
-#move to a directory without 'cd'
+# move to a directory without 'cd'
 setopt autocd
-# 正規表現の拡張　# ~ ^
+# extend glob ~ ^
 setopt extendedglob 
 # auto pushd
 setopt auto_pushd
-#{a-za-z} ブレース展開
+# {a-za-z} brace expand
 setopt brace_ccl
-#補完動作前にエイリアス展開
+# expand aliases before completion
 setopt complete_aliases
 # typo
 setopt correct
@@ -104,30 +114,30 @@ setopt hist_ignore_dups
 setopt hist_ignore_space
 # unnecessary blanks will be removed, when it is put in the history
 setopt hist_reduce_blanks
-# コマンド確定後すぐに履歴ファイルに保存する(設定しないと exit 時)
+# save immediately after command is performed ( if not, saves on exit )
 setopt inc_append_history
-# 補完候補をコンパクトにする
+# slim completion candidates
 setopt list_packed
-# ファイル種別を表す記号を末尾に表示
+# display simbols of file types at the end
 setopt list_types
 
 setopt pushd_ignore_dups
 setopt nomatch
-#ジョブの状態をすぐに知らせる
+# instantly notify status of jobs
 setopt notify
-#turn off the beep
+# turn off the beep
 unsetopt beep
-#share the history file
+# share the history file
 setopt sharehistory
-#set right prompt unvisible
+# set right prompt unvisible
 setopt transient_rprompt
-#開始と終了を記録
+# save begins and ends
 setopt EXTENDED_HISTORY
-#補完時にヒストリを自動的に展開
+# automatically expand the history when completion is done
 setopt hist_expand
-#シェルの終了処理でSIGHUPを送らないオプション
+# not send SIGHUP when exiting
 setopt nohup
-#Prohibit overwriting by redirection (>)
+# Prohibit overwriting by redirection (>)
 setopt noclobber
 
 # operate ls_abbrev when 'cd'
@@ -150,8 +160,7 @@ function extract() {
 }
 isdarwin || alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=extract
 
-# カラー記述を簡略化
-# 数字や文字で色を指定できるようにする
+# allow to indicate colors as numbers
 # 0:black
 # 1:red
 # 2:green
@@ -166,28 +175,28 @@ autoload -Uz colors; colors
 
 # left prompt
 #PROMPT="%F{green}%n@%m%F{magenta}${WINDOW:+[$WINDOW]}%F{white}[%T]%#%f "
-PROMPT="%F{green}%n@%m %F{white}[%T]%#%f "
+PROMPT='%F{green}%n@%m %F{white}[%T]%#%f '
 
 # right prompt
-# バージョン管理システム関連の情報を表示(zsh >=4.3.6)
+# display information about VCS(zsh >=4.3.6)
 autoload -Uz is-at-least
 if is-at-least 4.3.6; then
   autoload -Uz vcs_info
   zstyle ':vcs_info:*' enable bzr git svn hg
-  if [[ "$TERM" == dumb ]] ; then
-  # emacs 等から接続すると dumb 端末と認識され、そうした端末では色を出さないようにする
+  if [[ "$TERM" == dumb ]]; then
+  # connections via emacs is recognized as a dumb terminal, not use colors
     zstyle ':vcs_info:*' actionformats "(%s%)-[%b|%a] " "zsh: %r"
     zstyle ':vcs_info:*' formats "(%s%)-[%b] " "zsh: %r"
   else
-  # 色をつける
+  # color
     zstyle ':vcs_info:*' actionformats '%F{magenta}(%f%s%F{magenta})%F{yellow}-%F{magenta}[%F{green}%b%F{yellow}|%F{red}%a%F{magenta}]%f '
     zstyle ':vcs_info:*' formats '%F{magenta}(%f%s%F{magenta})%F{yellow}-%F{magenta}[%F{green}%b%F{magenta}]%f '
     zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{red}:%F{yellow}%r'
     zstyle ':vcs_info:bzr:*' use-simple true
     if is-at-least 4.3.10; then
       zstyle ':vcs_info:*' check-for-changes true
-      zstyle ':vcs_info:*' stagedstr "+"
-      zstyle ':vcs_info:*' unstagedstr "-"
+      zstyle ':vcs_info:*' stagedstr '+'
+      zstyle ':vcs_info:*' unstagedstr '-'
     fi
   fi
 fi
@@ -201,48 +210,46 @@ function precmd() {
   fi
   psvar=()
   vcs_info
-  if [ "$EMACS" ];then
-  # Emacs の ansi-term では右プロンプトを表示しない
-    RPROMPT=""
+  if [ "$EMACS" ]; then
+  # not display the right prompt in Emacs ansi-term 
+    RPROMPT=''
   else
-  # setopt prompt_subst を設定するとプロンプトに変数そのまま記述できる
-  # %39<...<%- は 39文字以上になったら前方を ... に置換する設定
+  # With setopt prompt_subst, variables are available in the prompt.
+  # "%39<...<%-" limits 39 letters to show up the rest becomes ...
   #RPROMPT='[%F{green}%39<...<%~%f] ${vcs_info_msg_0_}%f'
-    if [[ ${PWD}/ == /Volumes/* ]]; then
-    # Volumes 以下にいる場合
+    if [[ "${PWD}/" == /Volumes/* ]]; then
+    # at Volumes
       RPROMPT='[%F{yellow}%K{red}%39<...<%~%k%f]'
     else
-    # Volumes 以下にいない場合
+    # not at Volumes 
       RPROMPT='[%F{white}%39<...<%~%f]'
     fi
   fi
 }
 
-#red stderr
+# red stderr
 alias -g RED='2> >(redrev)'
 
 function redrev() {
   perl -pe 's/^/\e[41m/ && s/$/\e[m/'
 }
 
-#lscp
+# lscp
 lscp(){
   local filename="$(pwd | tr -d '\n')/$1"
   isdarwin && echo -n "$filename" | pbcopy || echo -n "$filename" | xclip -sel clip
   echo "$filename"
 }
 
-#platex and dvipdfmx
+# platex and dvipdfmx
 platex_dvipdfmx(){
   #platex $1 && dvipdfmx ${1%tex}dvi
   platex "$1"; bibtex "${1%.tex}"; platex "$1"; platex "$1"; dvipdfmx "${1%tex}dvi"
 }
 
 pdf_merge(){
-  test -e output.pdf && echo 'output.pdf exists.' || gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=output.pdf $@
+  [ -e output.pdf ] && echo 'output.pdf exists.' || gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=output.pdf $@
 }
-
-
 
 # colors used in coreutils ls and Zsh completion
 isdarwin && export LS_COLORS='di=36:ln=37;45:so=32:pi=33:ex=37;41:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43'
@@ -252,20 +259,20 @@ isdarwin && export LS_COLORS='di=36:ln=37;45:so=32:pi=33:ex=37;41:bd=34;46:cd=34
 #-----------------------------------------------------------------
 # ignored suffix for completion
 fignore=(.o .dvi .aux .toc - \~)
-# 補完の利用設定
+# utilize completion
 autoload -Uz compinit; compinit
 
 # show all candidates
 zstyle ':completion:*' verbose 'yes'
-# 補完の機能を拡張
+# expand completion
 zstyle ':completion:*' completer _expand _complete _match _prefix _approximate _list _history
-# 補完候補で入力された文字でまず補完してみて、補完不可なら大文字小文字を変換して補完する
+# First try to complete as the inputs, if no candidates exist, try to complete case insentively
 zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z} r:|[-_.]=**' '+m:{A-Z}={a-z} r:|[-_.]=**'
 
 ## color settings
-# 補完候補に LSCOLORS 同様色を付与
+# put colors on completion, following to LSCOLORS
 #zstyle ':completion:*:default' list-colors ${(s.:.)LSCOLORS}
-# ファイルリスト補完でも coreutils ls と同様に色をつける
+# when completion of file list, put colors as coreutils ls does
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 # colors for messages
 zstyle ':completion:*:messages' format "%{$fg[yellow]%}'%d'%f"
@@ -273,14 +280,14 @@ zstyle ':completion:*:warnings' format "%{$fg[red]%}'No matches for:'%{$fg[yello
 zstyle ':completion:*:descriptions' format "%{$fg[yellow]%}'completing %B%d%b'%f"
 zstyle ':completion:*:corrections' format "%{$fg[yellow]%}'%B%d '%{$fg[red]%}'(errors: %e)%b'%f"
 
-# 補完説明を表示する
+# display explain of completion
 zstyle ':completion:*:options' description 'yes'
-# sudo でも補完の対象とする
+# sudo also gets completion
 zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin
-# kill 補完で実行されるコマンドを指定
+# kill gets completion
 zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
 
-# URLをコピペした時にエスケープ対象文字を自動エスケープする
+# when copy and paste a URL, automatically escape escape sequences
 autoload -Uz url-quote-magic
 zstyle ':url-quote-magic:*' url-metas '?'
 zle -N self-insert url-quote-magic
@@ -290,29 +297,29 @@ zle -N self-insert url-quote-magic
 
 typeset -A abbreviations
 abbreviations=(
-  "Im"    "| more"
-  "Il"    "| less"
-  "Ia"    "| awk"
-  "Ig"    "| grep"
-  "Ieg"   "| egrep"
-  "Iag"   "| agrep"
-  "Igr"   "| groff -s -p -t -e -Tlatin1 -mandoc"
-  "Ip"    "| $PAGER"
-  "Ih"    "| head"
-  "Ik"    "| keep"
-  "It"    "| tail"
-  "Is"    "| sort"
-  "Iv"    "| ${VISUAL:-${EDITOR}}"
-  "Iw"    "| wc"
-  "Ix"    "| xargs"
-  "Ie"    "140.109.81.141:"
-  "Lustre" "140.109.81.141:lustre/"
-  "Ki"    "https://kensuke1984.github.io/bin/install.sh"
-  "Prop"  "properties"
-  "Iris"  "ftp.iris.washington.edu"
-  "Imp"   "impeldown.64-b.it"
-  "Mer"   "merveille.64-b.it"
-  "GIT"   "io.github.kensuke1984."
+  'Im'    '| more'
+  'Il'    '| less'
+  'Ia'    '| awk'
+  'Ig'    '| grep'
+  'Ieg'   '| egrep'
+  'Iag'   '| agrep'
+  'Igr'   '| groff -s -p -t -e -Tlatin1 -mandoc'
+  'Ip'    "| $PAGER"
+  'Ih'    '| head'
+  'Ik'    '| keep'
+  'It'    '| tail'
+  'Is'    '| sort'
+  'Iv'    "| ${VISUAL:-${EDITOR}}"
+  'Iw'    '| wc'
+  'Ix'    '| xargs'
+  'Ie'    '140.109.81.141:'
+  'Lustre' '140.109.81.141:lustre/'
+  'Ki'    'https://kensuke1984.github.io/bin/install.sh'
+  'Prop'  'properties'
+  'Iris'  'ftp.iris.washington.edu'
+  'Imp'   'impeldown.64-b.it'
+  'Mer'   'merveille.64-b.it'
+  'GIT'   'io.github.kensuke1984.'
 )
 
 magic-abbrev-expand() {
@@ -328,19 +335,18 @@ no-magic-abbrev-expand() {
 
 zle -N magic-abbrev-expand
 zle -N no-magic-abbrev-expand
-bindkey " " magic-abbrev-expand
-bindkey "^x " no-magic-abbrev-expand
+bindkey ' ' magic-abbrev-expand
+bindkey '^x ' no-magic-abbrev-expand
 
 #Delete Home End keys
-bindkey "^[[H" beginning-of-line
-bindkey "^[[F" end-of-line
-bindkey "^[[3~" delete-char
+bindkey '^[[H' beginning-of-line
+bindkey '^[[F' end-of-line
+bindkey '^[[3~' delete-char
 
 #alias
 aliasfile=~/.aliases
-test -r "$aliasfile" && source "$aliasfile"
+[ -r "$aliasfile" ] && source "$aliasfile"
 unset aliasfile
-#
 
 unalias run-help 2>/dev/null
 autoload run-help
@@ -364,9 +370,7 @@ iris(){
 }
 
 ls_abbrev() {
-  if [[ ! -r $PWD ]]; then
-    return
-  fi
+  [ -r "$(PWD)" ] || return
   # -a : Do not ignore entries starting with ..
   # -C : Force multi-column output.
   # -F : Append indicator (one of */=>@|) to entries.
@@ -374,7 +378,7 @@ ls_abbrev() {
   local -a opt_ls
   opt_ls=('-aCF' '--color=always')
   case "${OSTYPE}" in freebsd*|darwin*)
-  if type gls > /dev/null 2>&1; then
+  if type gls >/dev/null 2>&1; then
     cmd_ls='gls'
   else
   # -G : Enable colorized output.
@@ -402,50 +406,47 @@ epspng(){
 isdarwin || setxkbmap -option ctrl:nocaps
 
 pyenv="$HOME/.pyenv"
-test -e "$pyenv" && export PATH="$pyenv/bin:$PATH" && eval "$(pyenv init -)"
+[ -e "$pyenv" ] && export "PATH=$pyenv/bin:$PATH" && eval "$(pyenv init -)"
 isdarwin && eval "$(/usr/local/bin/pyenv init -)"
 
 # for SAC
 SACHOME=/usr/local/sac
-test -e $SACHOME && source ${SACHOME}/bin/sacinit.sh || (unset SACHOME; printf "SAC should be installed\n" 1>&2)
+[ -e "$SACHOME" ] && source "${SACHOME}/bin/sacinit.sh" || (unset SACHOME; printf 'SAC should be installed\n' 1>&2)
 
-#for TauP
+# for TauP
 TAUPHOME=/usr/local/taup
-test -e ${TAUPHOME} && export PATH=$PATH:${TAUPHOME}/bin || printf "TauP should be installed\n" 1>&2
+[ -e "${TAUPHOME}" ] && export "PATH=$PATH:${TAUPHOME}/bin" || printf 'TauP should be installed\n' 1>&2
 unset TAUPHOME
-#
 
 #sgftops
 function sgftops(){
-  if [ ! -e "${SACHOME}"/bin/sgftops ];then
-    printf "SACHOME is not set. (71)\n" 1>&2
+  if [ ! -e "${SACHOME}/bin/sgftops" ]; then
+    printf 'SACHOME is not set. (71)\n' 1>&2
     exit 71
   fi
   if [ -e "${1%sgf}ps" ]; then
-    printf "%s already exists.\n" "${1%sgf}.ps" 1>&2
+    printf '%s already exists. (9)\n' "${1%sgf}.ps" 1>&2
     return 9
   fi
-  ${SACHOME}/bin/sgftops "$1" "${1%sgf}ps"
+  "${SACHOME}/bin/sgftops" "$1" "${1%sgf}ps"
 }
 
 # local settings
 zshrc_local="$HOME/.zshrc_$(hostname)"
-test -r "$zshrc_local" && source "$zshrc_local"
+[ -r "$zshrc_local" ] && source "$zshrc_local"
 unset zshrc_local
-#
 
 # Delete duplicates
 typeset -U path cdpath fpath manpath
 typeset -T LD_LIBRARY_PATH ld_library_path
 typeset -U ld_library_path
-#
 
 # Attempt to set JAVA_HOME if it's not already set.
 if [ -z "$JAVA_HOME" ]; then
   if isdarwin; then
-    [ -z "$JAVA_HOME" -a -f "/usr/libexec/java_home" ] && export JAVA_HOME=$(/usr/libexec/java_home)
-    [ -z "$JAVA_HOME" -a -d "/Library/Java/Home" ] && export JAVA_HOME="/Library/Java/Home"
-    [ -z "$JAVA_HOME" -a -d "/System/Library/Frameworks/JavaVM.framework/Home" ] && export JAVA_HOME="/System/Library/Frameworks/JavaVM.framework/Home"
+    [ -z "$JAVA_HOME" -a -f /usr/libexec/java_home ] && export JAVA_HOME=$(/usr/libexec/java_home)
+    [ -z "$JAVA_HOME" -a -d /Library/Java/Home ] && export JAVA_HOME=/Library/Java/Home
+    [ -z "$JAVA_HOME" -a -d /System/Library/Frameworks/JavaVM.framework/Home ] && export JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Home
   else
     javaExecutable="$(command -v javac 2>/dev/null)"
     [ -z "$javaExecutable" ] && echo "JAVA_HOME not set and cannot find javac to deduce location, please set JAVA_HOME." 
@@ -455,7 +456,7 @@ if [ -z "$JAVA_HOME" ]; then
     javaHome="$(dirname "$javaExecutable")"
     javaHome=$(expr "$javaHome" : '\(.*\)/bin')
     JAVA_HOME="$javaHome"
-    [ -z "$JAVA_HOME" ] && echo "could not find java, please set JAVA_HOME"
+    [ -z "$JAVA_HOME" ] && echo 'could not find java, please set JAVA_HOME'
     export JAVA_HOME
   fi
 fi
