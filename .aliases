@@ -17,7 +17,7 @@ if isdarwin; then
   alias -s tex=open
   alias .='open .'
 #isdarwin && alias java='/usr/bin/java -Dapple.awt.UIElement=true'
- # alias macupdate='softwareupdate --install --all'
+# alias macupdate='softwareupdate --install --all'
   alias macupdate='sudo -H softwareupdate --install --all'
   alias brewupdate='brew update && brew upgrade'
   alias update='texupdate; macupdate; brewupdate; condaupdate'
@@ -51,20 +51,11 @@ alias screen='screen -U'
 alias mkdir='mkdir -p'
 alias -- +x="chmod +x"
 
-#alias kisti="ssh kensuke1@tachyon2.ksc.re.kr"
-
 #######
 alias reload="source ~/.zshrc"
 alias launchServicesDatabaseRebuild="/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister -kill -r -f -all local,system,user"
 
-alias tw="open -a /Applications/TextWrangler.App"
-alias iesc2="ssh 140.109.81.141"
-alias oldies="ssh 140.109.81.186"
 alias killCaps="setxkbmap -option ctrl:nocaps"
-alias momoxo="ssh momoxo.eps.s.u-tokyo.ac.jp"
-alias wave="ssh wave.eps.s.u-tokyo.ac.jp"
-alias impeldown="ssh impeldown.64-b.it"
-alias merveille="ssh merveille.64-b.it"
 #alias okumano="ssh 61.206.204.164"
 alias scp="scp -r"
 #alias pipupdate="sudo -H pip install -U pip && pip freeze --local | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 sudo -H pip3 install -U"
