@@ -1,4 +1,4 @@
-#### .zshrc v0.0.3.1 2020/8/3
+#### .zshrc v0.0.4 2020/8/27
 
 # detection of the OS
 isdarwin(){
@@ -174,8 +174,10 @@ isdarwin || alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=extract
 autoload -Uz colors; colors
 
 # left prompt
+      
 #PROMPT="%F{green}%n@%m%F{magenta}${WINDOW:+[$WINDOW]}%F{white}[%T]%#%f "
-PROMPT='%F{green}%n@%m %F{white}[%T]%#%f '
+#'%F{yellow}%39<...<%~%k%f'$'\n'
+PROMPT='%F{green}%n@%m %F{white}[%T]%f%(?,%F{green},%F{red})%B%(!,#,%#)%b%f '
 
 # right prompt
 # display information about VCS(zsh >=4.3.6)
