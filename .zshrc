@@ -69,8 +69,8 @@ compinit
 export PREFIX=/usr/local
 
 #time zone
-#export TZ='Asia/Tokyo'
-export TZ='Asia/Taipei'
+export TZ='Asia/Tokyo'
+#export TZ='Asia/Taipei'
 #export TZ='Europe/Paris'
 
 #character code
