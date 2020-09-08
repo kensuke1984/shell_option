@@ -40,6 +40,13 @@ anisotime_install(){
   chmod +x anisotime
 }
 
+# git
+if command -v git >/dev/null 2>&1; then
+  git config --global user.name 'kensuke'
+  git config --global user.email 'kensuke1984@hotmail.co.jp'
+# git config --global core.editor 'vim -c "set fenc="utf-8"'  
+fi
+
 
 # ls color settings
 if isdarwin; then
