@@ -1,5 +1,5 @@
 #-----------------------------------------------------------------
-# alias v0.0.2 2019/12/29
+# alias v0.0.3 2020/9/9
 #-----------------------------------------------------------------
 alias condaupdate='conda update --all -y'
 #conda update -n base -c defaults conda
@@ -16,8 +16,7 @@ if isdarwin; then
   alias -s jpg=open
   alias -s tex=open
   alias .='open .'
-#isdarwin && alias java='/usr/bin/java -Dapple.awt.UIElement=true'
-# alias macupdate='softwareupdate --install --all'
+# alias java='/usr/bin/java -Dapple.awt.UIElement=true'
   alias macupdate='sudo -H softwareupdate --install --all'
   alias brewupdate='brew update && brew upgrade'
   alias update='texupdate; macupdate; brewupdate; condaupdate'
@@ -56,7 +55,6 @@ alias reload="source ~/.zshrc"
 alias launchServicesDatabaseRebuild="/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister -kill -r -f -all local,system,user"
 
 alias killCaps="setxkbmap -option ctrl:nocaps"
-#alias okumano="ssh 61.206.204.164"
 alias scp="scp -r"
 #alias pipupdate="sudo -H pip install -U pip && pip freeze --local | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 sudo -H pip3 install -U"
 alias df="df -h"

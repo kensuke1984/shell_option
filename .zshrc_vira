@@ -1,0 +1,3 @@
+# 2020/9/9
+HISTFILE="$HOME/Dropbox/settings/.zsh_history_$(hostname)"
+alias update='macupdate; brewupdate; condaupdate'
