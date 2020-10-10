@@ -19,7 +19,7 @@ if isdarwin; then
 # alias java='/usr/bin/java -Dapple.awt.UIElement=true'
   alias macupdate='sudo -H softwareupdate --install --all'
   alias brewupdate='brew update && brew upgrade'
-  alias update='texupdate; macupdate; brewupdate; condaupdate'
+  alias update='macupdate; brewupdate; condaupdate'
 else
   alias ls='ls -vFG --color=auto'
   alias ll='ls -ltrh --color=auto'
