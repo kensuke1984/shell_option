@@ -414,9 +414,12 @@ epspng(){
 
 isdarwin || setxkbmap -option ctrl:nocaps
 
-pyenv="$HOME/.pyenv"
-[ -e "$pyenv" ] && export "PATH=$pyenv/bin:$PATH" && eval "$(pyenv init -)"
-isdarwin && eval "$(/usr/local/bin/pyenv init -)"
+if isdarwin && [ -e "$HOME/.pyenv" ]; then
+  export PYENV_ROOT="$HOME/.pyenv"
+  export PATH="$PYENV_ROOT/bin:$PATH"
+  eval "$(pyenv init --path)"
+  eval "$(pyenv init -)"
+fi
 
 # for SAC
 SACHOME=/usr/local/sac
