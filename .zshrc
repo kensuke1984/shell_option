@@ -1,4 +1,4 @@
-#### .zshrc v0.0.4 2020/8/27
+#### .zshrc v0.0.5 2021/5/30
 
 # detection of the OS
 isdarwin(){
@@ -456,9 +456,13 @@ typeset -U ld_library_path
 # Attempt to set JAVA_HOME if it's not already set.
 if [ -z "$JAVA_HOME" ]; then
   if isdarwin; then
-    [ -z "$JAVA_HOME" -a -f /usr/libexec/java_home ] && export JAVA_HOME=$(/usr/libexec/java_home)
-    [ -z "$JAVA_HOME" -a -d /Library/Java/Home ] && export JAVA_HOME=/Library/Java/Home
-    [ -z "$JAVA_HOME" -a -d /System/Library/Frameworks/JavaVM.framework/Home ] && export JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Home
+    if [ -f /usr/libexec/java_home ]; then
+      export JAVA_HOME=$(/usr/libexec/java_home)
+    elif [ -d /Library/Java/Home ]; then
+      export JAVA_HOME=/Library/Java/Home
+    elif [ -d /System/Library/Frameworks/JavaVM.framework/Home ]; then
+      export JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Home
+    fi
   else
     javaExecutable="$(command -v javac 2>/dev/null)"
     [ -z "$javaExecutable" ] && echo "JAVA_HOME not set and cannot find javac to deduce location, please set JAVA_HOME." 
