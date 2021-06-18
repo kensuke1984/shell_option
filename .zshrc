@@ -422,13 +422,13 @@ if isdarwin && [ -e "$HOME/.pyenv" ]; then
 fi
 
 # for SAC
-SACHOME=/usr/local/sac
-[ -e "$SACHOME" ] && source "${SACHOME}/bin/sacinit.sh" || (unset SACHOME; printf 'SAC should be installed\n' 1>&2)
+#SACHOME=/usr/local/sac
+#[ -e "$SACHOME" ] && source "${SACHOME}/bin/sacinit.sh" || (unset SACHOME; printf 'SAC should be installed\n' 1>&2)
 
 # for TauP
-TAUPHOME=/usr/local/taup
-[ -e "${TAUPHOME}" ] && export "PATH=$PATH:${TAUPHOME}/bin" || printf 'TauP should be installed\n' 1>&2
-unset TAUPHOME
+#TAUPHOME=/usr/local/taup
+#[ -e "${TAUPHOME}" ] && export "PATH=$PATH:${TAUPHOME}/bin" || printf 'TauP should be installed\n' 1>&2
+#unset TAUPHOME
 
 #sgftops
 function sgftops(){
