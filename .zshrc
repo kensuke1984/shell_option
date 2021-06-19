@@ -13,6 +13,11 @@ isemacs(){
   [ -n "$EMACS" ] && return 0 || return 1
 }
 
+# Obtain global ip
+get_global_ip(){
+  curl inet-ip.info
+}
+
 # Kibrary
 [ -e "$HOME/Kibrary" ] && export PATH="$HOME/Kibrary/bin:$PATH"
 
